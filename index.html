@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Built for This Community. | H&B Hometown LLC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy:   #0d1b2a;
+      --navy2:  #162233;
+      --gold:   #c9a84c;
+      --gold2:  #e8c96a;
+      --cream:  #f5f0e8;
+      --white:  #ffffff;
+      --gray:   #8a96a3;
+      --border: rgba(201,168,76,0.25);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--navy); color: var(--cream); font-family: 'Source Sans 3', sans-serif; font-weight: 300; line-height: 1.7; }
+    nav { background: var(--navy); border-bottom: 1px solid var(--border); padding: 1.1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .nav-brand { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--white); text-decoration: none; letter-spacing: 0.02em; }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; flex-wrap: wrap; }
+    .nav-links a { color: var(--gray); text-decoration: none; font-size: 0.82rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--gold); }
+    .hero { text-align: center; padding: 6rem 2rem 4rem; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 70%), var(--navy); border-bottom: 1px solid var(--border); }
+    .hero-eyebrow { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; color: var(--white); line-height: 1.1; margin-bottom: 1rem; }
+    .hero-sub { font-size: 1.1rem; color: var(--gray); margin-bottom: 2rem; letter-spacing: 0.05em; }
+    .hero-desc { max-width: 640px; margin: 0 auto 2.5rem; color: var(--cream); font-size: 1rem; opacity: 0.85; }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn { padding: 0.75rem 2rem; font-family: 'Source Sans 3', sans-serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: all 0.2s; cursor: pointer; border: none; display: inline-block; }
+    .btn-primary { background: var(--gold); color: var(--navy); }
+    .btn-primary:hover { background: var(--gold2); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--cream); }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .badge-strip { display: flex; justify-content: center; align-items: center; gap: 2.5rem; padding: 2rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .badge-item { text-align: center; font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; text-transform: uppercase; }
+    .badge-item span { display: block; font-size: 1.5rem; margin-bottom: 0.3rem; }
+    .quote-section { max-width: 700px; margin: 0 auto; padding: 4rem 2rem; text-align: center; }
+    .quote-text { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 2.5vw, 1.4rem); color: var(--cream); line-height: 1.6; margin-bottom: 1rem; font-style: italic; }
+    .quote-attr { font-size: 0.85rem; color: var(--gold); letter-spacing: 0.08em; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stat { padding: 2rem 1rem; text-align: center; border-right: 1px solid var(--border); }
+    .stat:last-child { border-right: none; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--gold); display: block; }
+    .stat-label { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.08em; text-transform: uppercase; }
+    section { padding: 5rem 2rem; }
+    .section-eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; color: var(--white); line-height: 1.15; margin-bottom: 1.5rem; }
+    .section-body { max-width: 640px; color: var(--gray); font-size: 1rem; }
+    .inner { max-width: 960px; margin: 0 auto; }
+    #story { border-bottom: 1px solid var(--border); }
+    .story-location { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--gold); letter-spacing: 0.08em; margin-top: 1.5rem; }
+    #pillars { background: var(--navy2); border-bottom: 1px solid var(--border); }
+    .pillars-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; margin-top: 3rem; }
+    .pillar { padding: 2rem; border: 1px solid var(--border); border-radius: 4px; background: var(--navy); transition: border-color 0.2s; }
+    .pillar:hover { border-color: rgba(201,168,76,0.5); }
+    .pillar-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; color: var(--border); display: block; margin-bottom: 0.5rem; }
+    .pillar h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--white); margin-bottom: 0.7rem; }
+    .pillar p { font-size: 0.9rem; color: var(--gray); }
+    #services { border-bottom: 1px solid var(--border); }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .service-card { padding: 2rem; border: 1px solid var(--border); border-radius: 4px; background: var(--navy2); position: relative; overflow: hidden; transition: border-color 0.2s, transform 0.2s; }
+    .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--gold); opacity: 0; transition: opacity 0.2s; }
+    .service-card:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-2px); }
+    .service-card:hover::before { opacity: 1; }
+    .service-tag { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; display: block; }
+    .service-card h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--white); margin-bottom: 0.7rem; }
+    .service-card p { font-size: 0.9rem; color: var(--gray); }
+    .sdvosb-callout { max-width: 960px; margin: 3rem auto 0; padding: 2rem; border: 1px solid var(--border); border-radius: 4px; background: var(--navy2); display: flex; gap: 1.5rem; align-items: flex-start; }
+    .sdvosb-icon { font-size: 2rem; flex-shrink: 0; }
+    .sdvosb-callout h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--white); margin-bottom: 0.5rem; }
+    .sdvosb-callout p { font-size: 0.9rem; color: var(--gray); }
+    #hometown { background: var(--navy2); border-bottom: 1px solid var(--border); }
+    .hometown-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .hometown-card { padding: 1.8rem; border: 1px solid var(--border); border-radius: 4px; background: var(--navy); }
+    .hometown-card .icon { font-size: 1.8rem; margin-bottom: 0.8rem; display: block; }
+    .hometown-card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--white); margin-bottom: 0.5rem; }
+    .hometown-card p { font-size: 0.85rem; color: var(--gray); }
+    #contact { border-bottom: 1px solid var(--border); }
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .contact-item { padding: 1.5rem; border: 1px solid var(--border); border-radius: 4px; background: var(--navy2); }
+    .contact-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
+    .contact-value { font-size: 0.95rem; color: var(--white); }
+    .contact-value a { color: var(--cream); text-decoration: none; }
+    .contact-value a:hover { color: var(--gold); }
+    .contact-cta { margin-top: 2rem; }
+    .tabbed-section { padding: 5rem 2rem; border-top: 1px solid var(--border); }
+    .tabs-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .tab-btn { background: transparent; border: 1px solid var(--border); color: var(--gray); padding: 0.5rem 1.3rem; font-family: 'Source Sans 3', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
+    .tab-btn:hover { color: var(--gold2); border-color: var(--gold); }
+    .tab-btn.active { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+    .tab-panel { display: none; animation: fadeIn 0.3s ease; }
+    .tab-panel.active { display: block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+    .panel-header { margin-bottom: 1.8rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .panel-header h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--white); margin-bottom: 0.3rem; }
+    .panel-header p { font-size: 0.85rem; color: var(--gray); }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.3rem; }
+    .book-card { background: var(--navy2); border: 1px solid var(--border); border-radius: 4px; padding: 1.5rem 1.4rem; transition: border-color 0.2s, transform 0.2s; position: relative; overflow: hidden; }
+    .book-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--gold); opacity: 0; transition: opacity 0.2s; }
+    .book-card:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-2px); }
+    .book-card:hover::before { opacity: 1; }
+    .book-tag { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; opacity: 0.85; }
+    .book-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--white); line-height: 1.3; margin-bottom: 0.25rem; }
+    .book-author { font-size: 0.8rem; font-weight: 600; color: var(--gold2); margin-bottom: 0.6rem; }
+    .book-desc { font-size: 0.83rem; color: var(--gray); line-height: 1.6; }
+    .testimonial-card { background: var(--navy2); border: 1px solid var(--border); border-radius: 4px; padding: 1.8rem; position: relative; transition: border-color 0.2s, transform 0.2s; overflow: hidden; }
+    .testimonial-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--gold); opacity: 0; transition: opacity 0.2s; }
+    .testimonial-card:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-2px); }
+    .testimonial-card:hover::before { opacity: 1; }
+    .quote-mark { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--gold); opacity: 0.3; line-height: 1; margin-bottom: -0.5rem; display: block; }
+    .testimonial-text { font-size: 0.95rem; color: var(--cream); line-height: 1.7; font-style: italic; margin-bottom: 1.2rem; }
+    .testimonial-meta { border-top: 1px solid var(--border); padding-top: 0.9rem; }
+    .testimonial-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--white); }
+    .testimonial-role { font-size: 0.78rem; color: var(--gold); margin-top: 0.1rem; }
+    .testimonial-location { font-size: 0.75rem; color: var(--gray); margin-top: 0.1rem; }
+    .form-box { background: var(--navy2); border: 1px solid var(--border); border-radius: 4px; padding: 2.5rem; }
+    .form-box h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--white); margin-bottom: 0.4rem; }
+    .form-sub { font-size: 0.88rem; color: var(--gray); margin-bottom: 2rem; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+    .form-group input, .form-group select, .form-group textarea { background: var(--navy); border: 1px solid var(--border); border-radius: 2px; color: var(--cream); font-family: 'Source Sans 3', sans-serif; font-size: 0.9rem; font-weight: 300; padding: 0.65rem 0.9rem; transition: border-color 0.2s; outline: none; width: 100%; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
+    .form-group select option { background: var(--navy2); }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .char-count { font-size: 0.72rem; color: var(--gray); text-align: right; margin-top: 0.2rem; }
+    .form-note { font-size: 0.78rem; color: var(--gray); margin-top: 1.2rem; padding: 0.8rem 1rem; border-left: 2px solid var(--border); font-style: italic; }
+    .btn-submit { margin-top: 1.5rem; background: var(--gold); color: var(--navy); border: none; padding: 0.8rem 2.5rem; font-family: 'Source Sans 3', sans-serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 2px; cursor: pointer; transition: background 0.2s; }
+    .btn-submit:hover { background: var(--gold2); }
+    .success-msg { display: none; text-align: center; padding: 2.5rem; border: 1px solid rgba(45,106,79,0.4); border-radius: 4px; background: rgba(45,106,79,0.1); }
+    .success-icon { font-size: 2.5rem; display: block; margin-bottom: 0.8rem; }
+    .success-msg h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--white); margin-bottom: 0.5rem; }
+    .success-msg p { font-size: 0.9rem; color: var(--gray); }
+    footer { text-align: center; padding: 2.5rem 2rem; font-size: 0.78rem; color: var(--gray); letter-spacing: 0.05em; border-top: 1px solid var(--border); }
+    footer a { color: var(--gold); text-decoration: none; }
+    @media (max-width: 700px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .stat:nth-child(2) { border-right: none; }
+      .form-grid { grid-template-columns: 1fr; }
+      .sdvosb-callout { flex-direction: column; }
+    }
+    @media (max-width: 480px) { .nav-links { display: none; } }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-brand">H&amp;B Hometown</a>
+    <ul class="nav-links">
+      <li><a href="#story">Our Story</a></li>
+      <li><a href="#pillars">Mission</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#hometown">Community</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#reading-list">Reading List</a></li>
+      <li><a href="#tools">Tools</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <span class="hero-eyebrow">Veteran-Led · Twin Falls, Idaho</span>
+    <h1>Built for This Community.</h1>
+    <p class="hero-sub">Leadership. Service. Home.</p>
+    <p class="hero-desc">H&amp;B Hometown LLC is a veteran-owned firm rooted in Twin Falls, Idaho — dedicated to developing leaders, supporting those who served, and strengthening the communities we call home.</p>
+    <div class="hero-btns">
+      <a href="#services" class="btn btn-primary">Explore Our Services</a>
+      <a href="#contact" class="btn btn-outline">Get In Touch</a>
+    </div>
+  </div>
+
+  <div class="badge-strip">
+    <div class="badge-item"><span>⭐</span>Service Disabled<br>Veteran Owned</div>
+    <div class="badge-item"><span>🎖</span>Veteran Support</div>
+    <div class="badge-item"><span>📋</span>Leadership Development</div>
+    <div class="badge-item"><span>🏘</span>Community Development</div>
+    <div class="badge-item"><span>📍</span>Twin Falls, Idaho</div>
+  </div>
+
+  <div class="quote-section">
+    <p class="quote-text">"The name says everything. Hailey and the Boys — my three kids, and the hometown we built our lives in. Everything we do is for them, and for the community that shaped us."</p>
+    <span class="quote-attr">— Derek Malone, Major USMC (Ret.)</span>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><span class="stat-num">20+</span><span class="stat-label">Years of Service</span></div>
+    <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Service Connected</span></div>
+    <div class="stat"><span class="stat-num">E→O</span><span class="stat-label">Enlisted to Officer</span></div>
+    <div class="stat"><span class="stat-num">3</span><span class="stat-label">Kids. One Mission.</span></div>
+  </div>
+
+  <section id="story">
+    <div class="inner">
+      <p class="section-eyebrow">Our Story</p>
+      <h2 class="section-title">A Marine's Mission —<br>Now Serving Home</h2>
+      <p class="section-body">From enlisted Marine to Major, from the battlefield to the boardroom — our founder has led in every environment imaginable. That experience doesn't retire. It transforms into something that serves the next generation.</p>
+      <br>
+      <p class="section-body">H&amp;B Hometown LLC was built on a simple belief: the same discipline, integrity, and servant leadership forged in the United States Marine Corps can build stronger businesses, stronger veterans, and stronger communities right here in southern Idaho.</p>
+      <span class="story-location">📍 Proudly Rooted in Twin Falls, Idaho</span>
+    </div>
+  </section>
+
+  <section id="pillars">
+    <div class="inner">
+      <p class="section-eyebrow">What Drives Us</p>
+      <h2 class="section-title">Three Pillars. One Purpose.</h2>
+      <div class="pillars-grid">
+        <div class="pillar"><span class="pillar-num">01</span><h3>Veteran Support</h3><p>Those who served deserve more than a thank-you. We provide transition coaching, employment readiness, peer mentorship, and advocacy — connecting veterans in our community to the resources and opportunities they've earned.</p></div>
+        <div class="pillar"><span class="pillar-num">02</span><h3>Leadership Development</h3><p>Leadership isn't a title — it's a discipline. Drawing from Marine Corps principles and real-world executive experience, we train individuals and organizations to lead with clarity, accountability, and purpose.</p></div>
+        <div class="pillar"><span class="pillar-num">03</span><h3>Community Development</h3><p>Strong communities don't happen by accident. We partner with local governments, schools, nonprofits, and businesses in southern Idaho to build the programs, connections, and infrastructure that make Twin Falls thrive.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="inner">
+      <p class="section-eyebrow">What We Offer</p>
+      <h2 class="section-title">Services Built Around Results</h2>
+      <div class="services-grid">
+        <div class="service-card"><span class="service-tag">Leadership</span><h3>Corporate Leadership Training</h3><p>Military-forged leadership frameworks adapted for your business. From frontline managers to executive teams, we deliver training that produces measurable change in performance, culture, and retention.</p></div>
+        <div class="service-card"><span class="service-tag">Veterans</span><h3>Veteran Transition Coaching</h3><p>Personalized coaching for veterans navigating the transition from military service to civilian career or entrepreneurship. We speak the language because we lived it.</p></div>
+        <div class="service-card"><span class="service-tag">Consulting</span><h3>Organizational Consulting</h3><p>Strategic advisory for businesses and nonprofits seeking operational clarity, stronger team alignment, and mission-driven growth. We bring outside perspective with proven methodology.</p></div>
+        <div class="service-card"><span class="service-tag">Community</span><h3>Community Program Development</h3><p>We design and implement community programs for municipalities, schools, and organizations — from youth leadership initiatives to veteran resource programs built for southern Idaho.</p></div>
+      </div>
+      <div class="sdvosb-callout">
+        <span class="sdvosb-icon">🇺🇸</span>
+        <div>
+          <h3>Service-Disabled Veteran Owned Small Business</h3>
+          <p>H&amp;B Hometown LLC is a proud SDVOSB, qualifying for federal set-aside contracts and government procurement programs. When you work with us, you work with a business that has skin in the game — because we served, and we still do.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hometown">
+    <div class="inner">
+      <p class="section-eyebrow">Our Community</p>
+      <h2 class="section-title">Twin Falls Is Not Just Where We Work.<br>It's Why We Work.</h2>
+      <p class="section-body">Southern Idaho is growing. Its businesses, veterans, schools, and families deserve world-class leadership and community support — not imported solutions from a distant city, but homegrown expertise from people who are invested in this place.</p>
+      <br>
+      <p class="section-body">We raised our kids here. We coach here. We serve here. H&amp;B Hometown is committed to making this community stronger for the next generation.</p>
+      <div class="hometown-grid">
+        <div class="hometown-card"><span class="icon">🏀</span><h3>Girls Varsity Basketball</h3><p>Coaching the next generation of leaders on and off the court — discipline, teamwork, and resilience built one practice at a time.</p></div>
+        <div class="hometown-card"><span class="icon">🏥</span><h3>Home Health Partnership</h3><p>Serving the healthcare community through strategic marketing — connecting families in Twin Falls to the care they deserve.</p></div>
+        <div class="hometown-card"><span class="icon">🌱</span><h3>Local First Philosophy</h3><p>We prioritize local partnerships, local hiring, and local impact. Southern Idaho's success is our success.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="inner">
+      <p class="section-eyebrow">Let's Connect</p>
+      <h2 class="section-title">Ready to Build Something That Lasts?</h2>
+      <p class="section-body">Whether you're a business, a veteran, or a community organization — we'd like to hear from you. Let's talk about what's possible.</p>
+      <div class="contact-grid">
+        <div class="contact-item"><div class="contact-label">Location</div><div class="contact-value">Twin Falls, Idaho</div></div>
+        <div class="contact-item"><div class="contact-label">Phone</div><div class="contact-value"><a href="tel:9105461206">910-546-1206</a></div></div>
+        <div class="contact-item"><div class="contact-label">Email</div><div class="contact-value"><a href="mailto:Derek@hbhometown.org">Derek@hbhometown.org</a></div></div>
+        <div class="contact-item"><div class="contact-label">Status</div><div class="contact-value">SDVOSB · Veteran Owned</div></div>
+      </div>
+      <div class="contact-cta"><a href="mailto:Derek@hbhometown.org" class="btn btn-primary">Send Us a Message</a></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       READING LIST
+       To add a book: copy any .book-card block
+       and paste it inside the correct panel's
+       .card-grid, then update the fields.
+       ══════════════════════════════════════ -->
+
+  <section id="reading-list" class="tabbed-section">
+    <div class="inner">
+      <p class="section-eyebrow">Derek's Bookshelf</p>
+      <h2 class="section-title">Reading List</h2>
+      <p class="section-body" style="margin-bottom:2rem;">Books that have shaped how I lead, serve, and build — shared in the hope they do the same for you.</p>
+
+      <div class="tabs-row">
+        <button class="tab-btn active" onclick="switchTab('rl','personal',this)">📘 Personal &amp; Professional Dev</button>
+        <button class="tab-btn" onclick="switchTab('rl','org',this)">🏛 Organizational Development</button>
+        <button class="tab-btn" onclick="switchTab('rl','mil',this)">🎖 Military &amp; Veteran</button>
+      </div>
+
+      <!-- PERSONAL / PROFESSIONAL DEVELOPMENT -->
+      <div id="rl-personal" class="tab-panel active">
+        <div class="panel-header">
+          <h3>📘 Personal &amp; Professional Development</h3>
+          <p>Building the mindset, habits, and character that lead to excellence.</p>
+        </div>
+        <div class="card-grid">
+          <div class="book-card"><span class="book-tag">Habits</span><div class="book-title">Atomic Habits</div><div class="book-author">James Clear</div><p class="book-desc">A practical framework for building good habits and breaking bad ones — small changes that compound into remarkable results.</p></div>
+          <div class="book-card"><span class="book-tag">Leadership</span><div class="book-title">Extreme Ownership</div><div class="book-author">Jocko Willink &amp; Leif Babin</div><p class="book-desc">Navy SEALs turned leadership consultants share how total accountability transforms teams and individuals.</p></div>
+          <div class="book-card"><span class="book-tag">Mindset</span><div class="book-title">Can't Hurt Me</div><div class="book-author">David Goggins</div><p class="book-desc">A raw account of mastering the mind and pushing past perceived limits through discipline and accountability.</p></div>
+          <div class="book-card"><span class="book-tag">Effectiveness</span><div class="book-title">The 7 Habits of Highly Effective People</div><div class="book-author">Stephen Covey</div><p class="book-desc">The foundational framework for personal and professional effectiveness that has shaped leaders for decades.</p></div>
+          <div class="book-card"><span class="book-tag">Mindset</span><div class="book-title">Mindset</div><div class="book-author">Carol Dweck</div><p class="book-desc">The science behind why believing you can improve makes all the difference in leadership and life.</p></div>
+          <div class="book-card"><span class="book-tag">Purpose</span><div class="book-title">Start with Why</div><div class="book-author">Simon Sinek</div><p class="book-desc">Why purpose-driven leadership outperforms every other model — and how to find yours.</p></div>
+          <div class="book-card"><span class="book-tag">Spirituality</span><div class="book-title">The Ruthless Elimination of Hurry</div><div class="book-author">John Mark Comer</div><p class="book-desc">A compelling case for slowing down in a distracted world — and why margin, rest, and presence make better leaders.</p></div>
+          <div class="book-card"><span class="book-tag">Power</span><div class="book-title">The 48 Laws of Power</div><div class="book-author">Robert Greene</div><p class="book-desc">A provocative study of power, influence, and human nature drawn from history's most ruthless and brilliant strategists.</p></div>
+          <div class="book-card"><span class="book-tag">Culture</span><div class="book-title">The Ugly American</div><div class="book-author">William Lederer &amp; Eugene Burdick</div><p class="book-desc">A fictional account that exposed America's foreign policy failures — a must-read for anyone leading across cultures.</p></div>
+          <div class="book-card"><span class="book-tag">Leadership</span><div class="book-title">Lead with Value</div><div class="book-author">Bruce Cardenas</div><p class="book-desc">A practical guide to leading by putting people and purpose first in every decision.</p></div>
+          <div class="book-card"><span class="book-tag">Self-Mastery</span><div class="book-title">The Mountain Is You</div><div class="book-author">Brianna Wiest</div><p class="book-desc">A transformative guide to understanding self-sabotage and becoming the person capable of achieving what you want most.</p></div>
+          <!-- ADD MORE PERSONAL/PROFESSIONAL BOOKS BELOW THIS LINE -->
+        </div>
+      </div>
+
+      <!-- ORGANIZATIONAL DEVELOPMENT -->
+      <div id="rl-org" class="tab-panel">
+        <div class="panel-header">
+          <h3>🏛 Organizational Development</h3>
+          <p>Understanding how teams, cultures, and institutions grow stronger.</p>
+        </div>
+        <div class="card-grid">
+          <div class="book-card"><span class="book-tag">Culture</span><div class="book-title">The Five Dysfunctions of a Team</div><div class="book-author">Patrick Lencioni</div><p class="book-desc">A leadership fable that reveals the root causes of team failure and the behaviors that drive cohesion and results.</p></div>
+          <div class="book-card"><span class="book-tag">Leadership</span><div class="book-title">Leaders Eat Last</div><div class="book-author">Simon Sinek</div><p class="book-desc">Why the best leaders sacrifice comfort for their people — and how that builds unbreakable teams.</p></div>
+          <div class="book-card"><span class="book-tag">Strategy</span><div class="book-title">Good to Great</div><div class="book-author">Jim Collins</div><p class="book-desc">What separates truly great organizations from good ones, backed by rigorous research.</p></div>
+          <div class="book-card"><span class="book-tag">Health</span><div class="book-title">The Advantage</div><div class="book-author">Patrick Lencioni</div><p class="book-desc">Why organizational health — not strategy or finance — is the ultimate competitive edge.</p></div>
+          <div class="book-card"><span class="book-tag">Leadership</span><div class="book-title">Turn the Ship Around</div><div class="book-author">L. David Marquet</div><p class="book-desc">A Navy submarine commander transforms the worst-performing crew into the best by pushing leadership down to every level.</p></div>
+          <div class="book-card"><span class="book-tag">Performance</span><div class="book-title">Whatever It Takes</div><div class="book-author">Brandon Bornancin</div><p class="book-desc">A relentless blueprint for outworking, outlearning, and outperforming every obstacle standing between you and your goals.</p></div>
+          <div class="book-card"><span class="book-tag">Success</span><div class="book-title">Outliers</div><div class="book-author">Malcolm Gladwell</div><p class="book-desc">A fascinating look at what truly drives extraordinary success — and why culture, timing, and opportunity matter as much as talent.</p></div>
+          <div class="book-card"><span class="book-tag">Stoicism</span><div class="book-title">The Obstacle Is the Way</div><div class="book-author">Ryan Holiday</div><p class="book-desc">Drawing on Stoic philosophy, this book shows how every obstacle contains the path forward for those with the right mindset.</p></div>
+          <div class="book-card"><span class="book-tag">Stoicism</span><div class="book-title">Ego Is the Enemy</div><div class="book-author">Ryan Holiday</div><p class="book-desc">A timely reminder that unchecked ego is the silent killer of great leadership, great teams, and great careers.</p></div>
+          <div class="book-card"><span class="book-tag">Teams</span><div class="book-title">Diagnosing Your Team</div><div class="book-author">Grant Thompson</div><p class="book-desc">A practical framework for identifying what's holding your team back and building the conditions for sustained high performance.</p></div>
+          <div class="book-card"><span class="book-tag">Culture</span><div class="book-title">Row the Boat</div><div class="book-author">Jon Gordon &amp; P.J. Fleck</div><p class="book-desc">An inspiring story of choosing a positive mindset and relentless energy regardless of circumstances — built for coaches, leaders, and teams.</p></div>
+          <!-- ADD MORE ORGANIZATIONAL BOOKS BELOW THIS LINE -->
+        </div>
+      </div>
+
+      <!-- MILITARY / VETERAN -->
+      <div id="rl-mil" class="tab-panel">
+        <div class="panel-header">
+          <h3>🎖 Military &amp; Veteran</h3>
+          <p>Stories, strategies, and lessons forged in service.</p>
+        </div>
+        <div class="card-grid">
+          <div class="book-card"><span class="book-tag">Military Fiction</span><div class="book-title">Once an Eagle</div><div class="book-author">Anton Myrer</div><p class="book-desc">The novel that has shaped more U.S. military officers than any other — an unflinching portrait of duty, integrity, and sacrifice across fifty years of service.</p></div>
+          <div class="book-card"><span class="book-tag">Transition</span><div class="book-title">Veteran Owned</div><div class="book-author">Robert Sarver</div><p class="book-desc">A practical guide for veterans stepping into entrepreneurship, drawing on the discipline and mission focus honed in uniform.</p></div>
+          <div class="book-card"><span class="book-tag">Special Operations</span><div class="book-title">No Easy Day</div><div class="book-author">Mark Owen</div><p class="book-desc">A firsthand account of the SEAL team raid that killed Bin Laden — and what it takes to operate at the highest level under pressure.</p></div>
+          <div class="book-card"><span class="book-tag">Warrior Culture</span><div class="book-title">The Warrior Ethos</div><div class="book-author">Steven Pressfield</div><p class="book-desc">A short, powerful examination of the warrior's code and how it applies to every challenge in life.</p></div>
+          <div class="book-card"><span class="book-tag">Survival</span><div class="book-title">Lone Survivor</div><div class="book-author">Marcus Luttrell</div><p class="book-desc">The story of Operation Red Wings and the unbreakable will of one man to survive against all odds.</p></div>
+          <div class="book-card"><span class="book-tag">Service</span><div class="book-title">Tattoos on the Heart</div><div class="book-author">Father Greg Boyle</div><p class="book-desc">A masterclass in radical compassion and community building — profoundly relevant to anyone serving veterans and communities.</p></div>
+          <div class="book-card"><span class="book-tag">Afghanistan</span><div class="book-title">The Wrong War</div><div class="book-author">Bing West</div><p class="book-desc">A ground-level account of the Afghanistan war that raises hard questions about strategy, culture, and the limits of military power.</p></div>
+          <div class="book-card"><span class="book-tag">Vietnam</span><div class="book-title">The Village</div><div class="book-author">Bing West</div><p class="book-desc">The true story of a Marine squad that lived among Vietnamese villagers — one of the most celebrated accounts of counterinsurgency ever written.</p></div>
+          <div class="book-card"><span class="book-tag">Afghanistan</span><div class="book-title">The Wolves of Helmand</div><div class="book-author">Frank "Gus" Biggio</div><p class="book-desc">A Marine lawyer's account of combat and justice in one of Afghanistan's most violent provinces.</p></div>
+          <div class="book-card"><span class="book-tag">Vietnam</span><div class="book-title">Phase Line Green</div><div class="book-author">Nicholas Warr</div><p class="book-desc">A Marine lieutenant's visceral account of the Battle of Hue City during the Tet Offensive — one of the most brutal urban battles in American history.</p></div>
+          <div class="book-card"><span class="book-tag">Iraq</span><div class="book-title">We Were One</div><div class="book-author">Patrick O'Donnell</div><p class="book-desc">The story of a Marine rifle platoon fighting through Fallujah — a tribute to the bonds forged in the most intense urban combat since Vietnam.</p></div>
+          <div class="book-card"><span class="book-tag">Military History</span><div class="book-title">Devil's Guard</div><div class="book-author">George Robert Elford</div><p class="book-desc">A gripping account of soldiers fighting in Indochina — a raw look at war's darkest and most complex corners.</p></div>
+          <div class="book-card"><span class="book-tag">Future War</span><div class="book-title">Ghost Fleet</div><div class="book-author">August Cole &amp; P.W. Singer</div><p class="book-desc">A visionary techno-thriller about the next world war — required reading for understanding how future conflict will be fought.</p></div>
+          <!-- ADD MORE MILITARY/VETERAN BOOKS BELOW THIS LINE -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       TOOLS
+       To add a document: copy a .book-card
+       block and update the fields.
+       ══════════════════════════════════════ -->
+
+  <section id="tools" class="tabbed-section">
+    <div class="inner">
+      <p class="section-eyebrow">Leadership Resources</p>
+      <h2 class="section-title">Tools</h2>
+      <p class="section-body" style="margin-bottom:2rem;">Leadership documents, frameworks, and resources to help you lead with clarity and purpose.</p>
+
+      <div style="padding: 3rem 2rem; text-align: center; border: 1px dashed var(--border); border-radius: 4px; background: var(--navy2);">
+        <span style="font-size: 2.5rem; display: block; margin-bottom: 1rem;">📋</span>
+        <p style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--white); margin-bottom: 0.5rem;">Resources Coming Soon</p>
+        <p style="font-size: 0.9rem; color: var(--gray); max-width: 400px; margin: 0 auto;">Leadership documents and tools will be added here. Check back soon.</p>
+      </div>
+
+      <!-- TOOLS CARD GRID — ADD DOCUMENTS BELOW -->
+      <!-- Example card structure:
+      <div class="card-grid" style="margin-top:2rem;">
+        <div class="book-card">
+          <span class="book-tag">Framework</span>
+          <div class="book-title">Document Title</div>
+          <p class="book-desc">Short description of the document.</p>
+        </div>
+      </div>
+      -->
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       TESTIMONIALS
+       To add a testimonial: copy any
+       .testimonial-card block and paste it
+       into the correct panel's .card-grid.
+       ══════════════════════════════════════ -->
+
+  <section id="testimonials" class="tabbed-section">
+    <div class="inner">
+      <p class="section-eyebrow">Our Community Speaks</p>
+      <h2 class="section-title">Testimonials</h2>
+      <p class="section-body" style="margin-bottom:2rem;">Stories from veterans, leaders, and community members whose lives have been shaped by our work together.</p>
+
+      <div class="tabs-row">
+        <button class="tab-btn active" onclick="switchTab('tm','veterans',this)">🎖 Veterans</button>
+        <button class="tab-btn" onclick="switchTab('tm','business',this)">💼 Business &amp; Corporate</button>
+        <button class="tab-btn" onclick="switchTab('tm','community',this)">🏘 Community</button>
+        <button class="tab-btn" onclick="switchTab('tm','submit',this)">✍️ Share Your Story</button>
+      </div>
+
+      <div id="tm-veterans" class="tab-panel active">
+        <div class="panel-header"><h3>🎖 Veterans</h3><p>Stories from those who served and found their next mission.</p></div>
+        <div class="card-grid">
+          <div class="testimonial-card"><span class="quote-mark">"</span><p class="testimonial-text">Derek didn't just help me write a resume — he helped me translate twenty years of service into a language the civilian world could understand. I landed a leadership role within two months of working with him.</p><div class="testimonial-meta"><div class="testimonial-name">James R.</div><div class="testimonial-role">USMC Veteran · Transition Coaching Client</div><div class="testimonial-location">Twin Falls, Idaho</div></div></div>
+          <!-- ADD MORE VETERAN TESTIMONIALS BELOW THIS LINE -->
+        </div>
+      </div>
+
+      <div id="tm-business" class="tab-panel">
+        <div class="panel-header"><h3>💼 Business &amp; Corporate</h3><p>Results from organizations that brought us in to lead the change.</p></div>
+        <div class="card-grid">
+          <div class="testimonial-card"><span class="quote-mark">"</span><p class="testimonial-text">The leadership training Derek delivered to our management team was unlike anything we'd experienced. It was direct, practical, and immediately applicable. Our team's accountability culture shifted within weeks.</p><div class="testimonial-meta"><div class="testimonial-name">Sarah M.</div><div class="testimonial-role">Operations Director · Corporate Leadership Training</div><div class="testimonial-location">Southern Idaho</div></div></div>
+          <!-- ADD MORE BUSINESS TESTIMONIALS BELOW THIS LINE -->
+        </div>
+      </div>
+
+      <div id="tm-community" class="tab-panel">
+        <div class="panel-header"><h3>🏘 Community</h3><p>Voices from Twin Falls and southern Idaho.</p></div>
+        <div class="card-grid">
+          <!-- ADD MORE COMMUNITY TESTIMONIALS BELOW THIS LINE -->
+        </div>
+      </div>
+
+      <div id="tm-submit" class="tab-panel">
+        <div class="form-box" id="tm-form-wrapper">
+          <h3>Tell Us About Your Experience</h3>
+          <p class="form-sub">All submissions are reviewed before publishing. We'll reach out if we have any questions.</p>
+          <form onsubmit="handleTestimonialSubmit(event)">
+            <div class="form-grid">
+              <div class="form-group"><label>First Name *</label><input type="text" id="tm-fname" placeholder="John" required /></div>
+              <div class="form-group"><label>Last Name / Initial *</label><input type="text" id="tm-lname" placeholder="Smith or S." required /></div>
+              <div class="form-group"><label>Email Address *</label><input type="email" id="tm-email" placeholder="you@email.com" required /></div>
+              <div class="form-group"><label>City, State</label><input type="text" id="tm-location" placeholder="Twin Falls, Idaho" /></div>
+              <div class="form-group"><label>Your Role / Background</label><input type="text" id="tm-role" placeholder="e.g. Army Veteran, Business Owner" /></div>
+              <div class="form-group"><label>Category *</label><select id="tm-category" required><option value="" disabled selected>Select one...</option><option>Veteran</option><option>Business / Corporate</option><option>Community Member</option></select></div>
+              <div class="form-group full"><label>Your Story *</label><textarea id="tm-story" placeholder="Share your experience with H&amp;B Hometown..." maxlength="600" oninput="document.getElementById('tm-chars').textContent=this.value.length" required></textarea><div class="char-count"><span id="tm-chars">0</span> / 600</div></div>
+              <div class="form-group full"><label>Permission to Publish *</label><select id="tm-consent" required><option value="" disabled selected>Select one...</option><option>Yes — use my full name</option><option>Yes — first name and last initial only</option><option>Yes — publish anonymously</option><option>No — feedback only, do not publish</option></select></div>
+            </div>
+            <p class="form-note">📋 All submissions go directly to Derek for review. We never publish without your permission.</p>
+            <button type="submit" class="btn-submit">Submit My Story</button>
+          </form>
+        </div>
+        <div class="success-msg" id="tm-success">
+          <span class="success-icon">🇺🇸</span>
+          <h3>Thank You for Sharing</h3>
+          <p>Your story has been sent to Derek for review. We appreciate you taking the time — it means more than you know.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    H&amp;B Hometown LLC &nbsp;·&nbsp; Leadership · Service · Home · Twin Falls, Idaho
+    <br style="margin-bottom:0.4rem">
+    © 2026 H&amp;B Hometown LLC · Veteran Owned · SDVOSB
+  </footer>
+
+  <script>
+    function switchTab(prefix, name, btn) {
+      document.querySelectorAll('[id^="' + prefix + '-"]').forEach(p => p.classList.remove('active'));
+      btn.closest('.tabs-row').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(prefix + '-' + name).classList.add('active');
+      btn.classList.add('active');
+    }
+    function handleTestimonialSubmit(e) {
+      e.preventDefault();
+      const name    = document.getElementById('tm-fname').value + ' ' + document.getElementById('tm-lname').value;
+      const email   = document.getElementById('tm-email').value;
+      const loc     = document.getElementById('tm-location').value;
+      const role    = document.getElementById('tm-role').value;
+      const cat     = document.getElementById('tm-category').value;
+      const story   = document.getElementById('tm-story').value;
+      const consent = document.getElementById('tm-consent').value;
+      const subject = encodeURIComponent('New Testimonial Submission — ' + name);
+      const body    = encodeURIComponent('NAME: '+name+'\nEMAIL: '+email+'\nLOCATION: '+loc+'\nROLE: '+role+'\nCATEGORY: '+cat+'\nCONSENT: '+consent+'\n\nSTORY:\n'+story);
+      window.location.href = 'mailto:Derek@hbhometown.org?subject=' + subject + '&body=' + body;
+      setTimeout(() => {
+        document.getElementById('tm-form-wrapper').style.display = 'none';
+        document.getElementById('tm-success').style.display = 'block';
+      }, 800);
+    }
+  </script>
+
+</body>
+</html>
