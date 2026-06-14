@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Leadership Training | H&amp;B Hometown LLC</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
+
+const PALETTE = {
+  bg: "#1C1F2E", surface: "#252839", card: "#2E3247", cardAlt: "#353854",
+  offWhite: "#F5F2EC", muted: "#A8A4A0", gold: "#B8963E", goldLight: "#D4B05A",
+  slate: "#3D5166", sage: "#6B8C7A", danger: "#C25B5B",
+  border: "rgba(184,150,62,0.18)", borderSubtle: "rgba(245,242,236,0.08)",
+};
+
+const css = `
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1C1F2E; color: #F5F2EC; font-family: 'Inter', sans-serif; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: #1C1F2E; }
+  ::-webkit-scrollbar-thumb { background: #3D5166; border-radius: 3px; }
+  .app-shell { min-height: 100vh; display: flex; flex-direction: column; }
+  .app-header { background: #252839; border-bottom: 1px solid rgba(184,150,62,0.18); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .header-brand { display: flex; flex-direction: column; }
+  .header-eyebrow { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #B8963E; font-family: 'IBM Plex Mono', monospace; margin-bottom: 2px; }
+  .header-title { font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 700; color: #F5F2EC; letter-spacing: 0.01em; }
+  .header-back { background: transparent; border: 1px solid rgba(184,150,62,0.18); color: #B8963E; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; padding: 8px 18px; cursor: pointer; text-transform: uppercase; text-decoration: none; display: inline-block; transition: all 0.2s ease; }
+  .header-back:hover { background: rgba(184,150,62,0.12); border-color: #B8963E; }
+  .notes-trigger { background: transparent; border: 1px solid rgba(184,150,62,0.18); color: #B8963E; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; padding: 8px 18px; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; position: relative; }
+  .notes-trigger:hover { background: rgba(184,150,62,0.12); border-color: #B8963E; }
+  .notes-badge { position: absolute; top: -6px; right: -6px; background: #B8963E; color: #1C1F2E; font-size: 10px; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .primary-nav { background: #252839; border-bottom: 1px solid rgba(245,242,236,0.08); display: flex; gap: 0; overflow-x: auto; padding: 0 32px; }
+  .nav-tab { background: transparent; border: none; border-bottom: 2px solid transparent; color: #A8A4A0; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; padding: 14px 24px 12px; text-transform: uppercase; transition: all 0.2s ease; white-space: nowrap; display: flex; align-items: center; gap: 8px; }
+  .nav-tab .tab-roman { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #B8963E; opacity: 0.6; }
+  .nav-tab:hover { color: #F5F2EC; }
+  .nav-tab.active { color: #F5F2EC; border-bottom-color: #B8963E; }
+  .nav-tab.active .tab-roman { opacity: 1; }
+  .main-content { flex: 1; padding: 36px 32px 80px; max-width: 1100px; width: 100%; margin: 0 auto; }
+  .section-header { margin-bottom: 36px; }
+  .section-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #B8963E; margin-bottom: 10px; }
+  .section-title { font-family: 'Playfair Display', Georgia, serif; font-size: 32px; font-weight: 700; color: #F5F2EC; line-height: 1.2; margin-bottom: 10px; }
+  .section-desc { font-size: 14px; color: #A8A4A0; line-height: 1.7; max-width: 680px; }
+  .section-rule { border: none; border-top: 1px solid rgba(245,242,236,0.08); margin: 20px 0 32px; }
+  .sub-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+  .sub-tab { background: #252839; border: 1px solid rgba(245,242,236,0.08); border-radius: 2px; color: #A8A4A0; cursor: pointer; font-size: 11px; font-weight: 500; letter-spacing: 0.06em; padding: 7px 16px; text-transform: uppercase; transition: all 0.18s ease; }
+  .sub-tab:hover { color: #F5F2EC; border-color: rgba(184,150,62,0.3); }
+  .sub-tab.active { background: rgba(184,150,62,0.12); border-color: #B8963E; color: #D4B05A; }
+  .card { background: #2E3247; border: 1px solid rgba(245,242,236,0.08); padding: 28px; margin-bottom: 20px; }
+  .card-title { font-family: 'Playfair Display', Georgia, serif; font-size: 18px; font-weight: 600; color: #F5F2EC; margin-bottom: 14px; }
+  .card-subtitle { font-size: 11px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.12em; text-transform: uppercase; color: #B8963E; margin-bottom: 8px; }
+  .card-body { font-size: 14px; color: #A8A4A0; line-height: 1.75; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .word-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .word-chip { font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 5px 12px; border-radius: 2px; }
+  .chip-power { background: rgba(107,140,122,0.2); border: 1px solid rgba(107,140,122,0.4); color: #8FC4A8; }
+  .chip-avoid { background: rgba(194,91,91,0.15); border: 1px solid rgba(194,91,91,0.35); color: #D88080; }
+  .scenario { background: #353854; border-left: 3px solid #B8963E; padding: 16px 20px; margin: 12px 0; }
+  .scenario-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #B8963E; margin-bottom: 6px; }
+  .scenario-text { font-size: 13px; color: #F5F2EC; line-height: 1.65; font-style: italic; }
+  .scenario-note { font-size: 12px; color: #A8A4A0; margin-top: 8px; font-style: normal; }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .compare-box { padding: 14px 16px; }
+  .compare-box.avoid { background: rgba(194,91,91,0.08); border: 1px solid rgba(194,91,91,0.25); }
+  .compare-box.prefer { background: rgba(107,140,122,0.08); border: 1px solid rgba(107,140,122,0.25); }
+  .compare-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
+  .compare-box.avoid .compare-label { color: #D88080; }
+  .compare-box.prefer .compare-label { color: #8FC4A8; }
+  .compare-item { font-size: 13px; color: #F5F2EC; padding: 4px 0; line-height: 1.5; }
+  .plan-timeline { display: flex; gap: 0; margin-bottom: 28px; }
+  .plan-phase { flex: 1; cursor: pointer; border-bottom: 2px solid rgba(245,242,236,0.08); padding: 16px 20px; transition: all 0.2s ease; background: #252839; border-top: 1px solid rgba(245,242,236,0.08); border-left: 1px solid rgba(245,242,236,0.08); border-right: 1px solid rgba(245,242,236,0.08); }
+  .plan-phase.active { background: rgba(184,150,62,0.1); border-bottom-color: #B8963E; }
+  .plan-phase-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #A8A4A0; margin-bottom: 4px; }
+  .plan-phase.active .plan-phase-label { color: #B8963E; }
+  .plan-phase-title { font-family: 'Playfair Display', Georgia, serif; font-size: 16px; color: #F5F2EC; }
+  .checklist-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(245,242,236,0.08); }
+  .checklist-item:last-child { border-bottom: none; }
+  .check-box { width: 18px; height: 18px; border: 1px solid rgba(184,150,62,0.18); cursor: pointer; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; background: transparent; }
+  .check-box.checked { background: rgba(184,150,62,0.2); border-color: #B8963E; }
+  .check-mark { color: #B8963E; font-size: 11px; font-weight: 700; }
+  .check-text { font-size: 13px; color: #F5F2EC; line-height: 1.5; }
+  .check-text.done { color: #A8A4A0; text-decoration: line-through; text-decoration-color: rgba(168,164,160,0.4); }
+  .rating-row { display: flex; align-items: center; gap: 16px; padding: 12px 0; border-bottom: 1px solid rgba(245,242,236,0.08); }
+  .rating-label { font-size: 13px; color: #F5F2EC; flex: 1; }
+  .rating-dots { display: flex; gap: 6px; }
+  .rating-dot { width: 24px; height: 24px; border: 1px solid rgba(245,242,236,0.08); border-radius: 50%; cursor: pointer; transition: all 0.15s ease; background: transparent; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #A8A4A0; display: flex; align-items: center; justify-content: center; }
+  .rating-dot.filled { background: #B8963E; border-color: #B8963E; color: #1C1F2E; font-weight: 700; }
+  .notes-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(28,31,46,0.7); backdrop-filter: blur(4px); display: flex; justify-content: flex-end; }
+  .notes-panel { width: min(480px, 100vw); background: #1A1D2C; border-left: 1px solid rgba(184,150,62,0.18); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+  .notes-header { padding: 20px 24px 16px; border-bottom: 1px solid rgba(184,150,62,0.18); display: flex; align-items: center; justify-content: space-between; }
+  .notes-header-text { font-family: 'Playfair Display', Georgia, serif; font-size: 18px; color: #F5F2EC; }
+  .notes-close { background: transparent; border: 1px solid rgba(245,242,236,0.08); color: #A8A4A0; cursor: pointer; font-size: 18px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; }
+  .notes-close:hover { color: #F5F2EC; }
+  .notes-context { padding: 10px 24px 12px; background: rgba(184,150,62,0.06); border-bottom: 1px solid rgba(245,242,236,0.08); font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #B8963E; }
+  .notes-input { flex: 1; background: transparent; border: none; color: #F5F2EC; font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.9; padding: 20px 24px; resize: none; outline: none; }
+  .notes-input::placeholder { color: #A8A4A0; opacity: 0.5; }
+  .notes-entries { border-top: 1px solid rgba(245,242,236,0.08); max-height: 240px; overflow-y: auto; }
+  .notes-entry { padding: 12px 24px; border-bottom: 1px solid rgba(245,242,236,0.08); }
+  .notes-entry-meta { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #B8963E; letter-spacing: 0.1em; margin-bottom: 4px; }
+  .notes-entry-text { font-size: 13px; color: #A8A4A0; line-height: 1.6; }
+  .notes-footer { padding: 12px 24px; border-top: 1px solid rgba(245,242,236,0.08); display: flex; gap: 10px; }
+  .btn-primary { background: #B8963E; border: none; color: #1C1F2E; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; padding: 10px 20px; text-transform: uppercase; transition: all 0.15s ease; flex: 1; }
+  .btn-primary:hover { background: #D4B05A; }
+  .btn-secondary { background: transparent; border: 1px solid rgba(245,242,236,0.08); color: #A8A4A0; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; padding: 10px 16px; text-transform: uppercase; transition: all 0.15s ease; }
+  .btn-secondary:hover { color: #F5F2EC; }
+  .inline-note-btn { background: transparent; border: 1px dashed rgba(184,150,62,0.3); color: #B8963E; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; padding: 5px 12px; text-transform: uppercase; transition: all 0.15s ease; margin-top: 14px; display: inline-block; }
+  .inline-note-btn:hover { background: rgba(184,150,62,0.08); border-style: solid; }
+  .reading-card { background: #2E3247; border: 1px solid rgba(245,242,236,0.08); padding: 22px 26px; margin-bottom: 14px; display: flex; gap: 20px; align-items: flex-start; }
+  .reading-number { font-family: 'Playfair Display', Georgia, serif; font-size: 36px; color: rgba(184,150,62,0.3); line-height: 1; min-width: 40px; font-weight: 700; }
+  .reading-content { flex: 1; }
+  .reading-title { font-family: 'Playfair Display', Georgia, serif; font-size: 16px; color: #F5F2EC; margin-bottom: 6px; }
+  .reading-author { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #B8963E; text-transform: uppercase; margin-bottom: 8px; }
+  .reading-desc { font-size: 13px; color: #A8A4A0; line-height: 1.65; }
+  .reflect-area { width: 100%; background: #353854; border: 1px solid rgba(245,242,236,0.08); color: #F5F2EC; font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.8; padding: 16px 18px; resize: vertical; outline: none; margin-top: 10px; min-height: 100px; transition: border-color 0.15s ease; }
+  .reflect-area:focus { border-color: rgba(184,150,62,0.4); }
+  .reflect-area::placeholder { color: rgba(168,164,160,0.4); }
+  .progress-bar-wrap { background: #252839; border: 1px solid rgba(245,242,236,0.08); height: 4px; margin-bottom: 6px; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #3D5166, #B8963E); transition: width 0.4s ease; }
+  .progress-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: #A8A4A0; text-transform: uppercase; }
+  .plan-type-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 24px; }
+  .plan-type-btn { background: #252839; border: 1px solid rgba(245,242,236,0.08); color: #A8A4A0; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; padding: 12px 10px; text-align: center; text-transform: uppercase; transition: all 0.15s ease; line-height: 1.4; }
+  .plan-type-btn:hover { color: #F5F2EC; }
+  .plan-type-btn.active { background: rgba(184,150,62,0.1); border-color: #B8963E; color: #D4B05A; }
+  .tag { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px; border-radius: 2px; margin-right: 6px; margin-bottom: 6px; }
+  .tag-gold { background: rgba(184,150,62,0.12); color: #D4B05A; border: 1px solid rgba(184,150,62,0.3); }
+  .tag-slate { background: rgba(61,81,102,0.2); color: #8AAFC7; border: 1px solid rgba(61,81,102,0.4); }
+  .divider { border: none; border-top: 1px solid rgba(245,242,236,0.08); margin: 24px 0; }
+  .info-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(245,242,236,0.08); }
+  .info-row:last-child { border-bottom: none; }
+  .info-text { font-size: 13px; color: #A8A4A0; line-height: 1.65; }
+  .info-text strong { color: #F5F2EC; font-weight: 500; }
+  @media (max-width: 768px) {
+    .grid-2, .compare-grid { grid-template-columns: 1fr; }
+    .plan-type-grid { grid-template-columns: 1fr 1fr; }
+    .main-content { padding: 24px 16px 80px; }
+    .primary-nav { padding: 0 16px; }
+    .app-header { padding: 14px 16px; }
+  }
+`;
+
+const POWER_WORDS = ["Clarity","Commitment","Elevate","Execute","Excellence","Impact","Initiative","Integrity","Lead","Leverage","Mindful","Momentum","Ownership","Perspective","Purposeful","Resilient","Strategic","Transparent","Trust","Valued"];
+const AVOID_WORDS = ["Always","Blame","But (dismissive)","Can't","Defensive","Frustrating","Honestly (filler)","Impossible","Just","Micromanage","Never","Obviously","Overreact","Problem (sole focus)","Reactive","Should have","Technically","Try (without intent)","Unfair","You always"];
+const POWER_PHRASES = ["I see the work you've been putting in, and I want to be direct with you about where I see your growth edge.","Let me be clear about what success looks like here, so we're working from the same definition.","I want to understand your perspective before we move forward.","What I'm observing is — and I'd like your thoughts on that.","The expectation going forward is, and here's how I'll support you in meeting it.","This is a conversation I'm having because I believe in your potential and want to see you succeed.","Can you help me understand what got in the way?","I want to separate the behavior from the person — the behavior isn't working, and here's why.","Let's agree on what this looks like in 30 days.","You have strengths that aren't showing up right now. Let's talk about why."];
+const VELVET_DAGGERS = [
+  { phrase: "I'm sure you didn't mean it that way, but...", meaning: "Opens accountability without triggering defensiveness. The 'but' reframes intent while still naming impact." },
+  { phrase: "I've noticed a pattern, and I want to address it before it becomes a larger conversation.", meaning: "Creates urgency without escalation. Signals that this is a choice point, not a verdict." },
+  { phrase: "I'll be honest — I expected more from you on this, and I think you did too.", meaning: "Holds a high standard while appealing to the person's own self-image and investment." },
+  { phrase: "What you're describing as the situation and what others are experiencing are two different things.", meaning: "Challenges narrative without calling someone a liar. Introduces the idea that perception is data." },
+  { phrase: "I'm not asking you to agree with me. I'm asking you to hear what I'm observing.", meaning: "Separates understanding from compliance — disarms resistance by removing the need to win." },
+  { phrase: "That approach may have worked before, but it's not serving the team in this season.", meaning: "Acknowledges past success while closing the door on using it as a shield." },
+];
+const BUILD_UP = [
+  { trigger: "After a difficult project", phrase: "You carried a lot on this one, and the fact that you kept the team steady through it — that's leadership, even when it didn't feel like it." },
+  { trigger: "When someone doubts their ability", phrase: "I'm not asking you to feel confident right now. I'm asking you to trust the evidence — and the evidence says you're capable of this." },
+  { trigger: "When someone made a mistake and recovered", phrase: "The way you handled what came after matters more to me than the mistake itself. That's the kind of character this team needs." },
+  { trigger: "After feedback that was hard to hear", phrase: "The fact that you're still here and still engaged tells me everything. That's not easy. And it's exactly why this conversation was worth having." },
+  { trigger: "When someone steps up unexpectedly", phrase: "That wasn't required of you. You chose it. That's worth naming, because not everyone would have." },
+];
+const UNCOMFORTABLE_STEPS = [
+  { step: "01", title: "Prepare Deliberately", body: "Name the specific behavior, not a personality judgment. Know your 'what' before you enter the room. Write out what you're observing, the impact, and what you need to change — in that order." },
+  { step: "02", title: "Choose the Right Setting", body: "Difficult conversations should not happen in hallways, during shift overlap, or in front of peers. Private, scheduled, unrushed. If you don't have 20 minutes to do it right, you don't have time to do it." },
+  { step: "03", title: "Open Without Ambiguity", body: "Don't soften so much that your message disappears. 'I want to talk about something that's been on my mind' leaves too much room. 'I need to talk with you about a specific pattern I've been observing' is clearer and kinder." },
+  { step: "04", title: "State, Don't Accuse", body: "Lead with observation, not interpretation. 'I've noticed that in the last three team meetings, you've left early without notice' vs. 'You clearly don't respect the team's time.' One invites response. The other invites walls." },
+  { step: "05", title: "Listen to Understand, Not to Counter", body: "There is often something you don't know. Your job in the listening phase is not to prepare your rebuttal. Ask: 'Help me understand what's been happening on your end.'" },
+  { step: "06", title: "Name the Expected Shift", body: "Don't leave without clarity. The employee should leave knowing exactly what needs to change, by when, and what happens if it doesn't. Ambiguity is not kindness — it's a delay of consequence." },
+  { step: "07", title: "Document and Follow Through", body: "A conversation without a record is a conversation that can be rewritten. Follow up in writing — not as a threat, but as a commitment to what was agreed." },
+];
+const CORRECT_PROFESSIONALLY = [
+  { label: "SBI Model", title: "Situation · Behavior · Impact", body: "Anchor every correction to something observable. Situation: when and where. Behavior: what you specifically saw or heard. Impact: what effect that had. This structure removes opinion and grounds the conversation in fact." },
+  { label: "The Ask", title: "Replace 'Don't' with 'Do'", body: "Telling someone what to stop is half the instruction. The other half is what to do instead. Correction without direction leaves people in a gap." },
+  { label: "Tone", title: "Firm Does Not Mean Harsh", body: "You can be completely clear, completely serious, and completely human at the same time. Match gravity to the situation — but never weaponize tone." },
+  { label: "Timing", title: "Timely, Not Immediate", body: "Correct close to the behavior, but not in the heat of it. Waiting until both parties are regulated produces far better outcomes than reacting in the moment." },
+  { label: "Consistency", title: "Apply Standards Evenly", body: "The fastest way to destroy trust in corrections is inconsistency. If the standard applies to one, it applies to all. Staff notice, and they remember." },
+];
+const PROFESSIONAL_PERSONAL = [
+  { title: "What 'Separating' Actually Means", body: "It does not mean being robotic or pretending people's lives don't exist. It means not allowing personal information — theirs or yours — to influence professional decisions, access, or standards." },
+  { title: "The Oversharing Dynamic", body: "When a leader shares too much personal information, they shift the power dynamic. Staff feel either obligated to reciprocate or uncertain how to treat you. Lead from a position, not a vulnerability." },
+  { title: "When Staff Share Personal Struggles", body: "Acknowledge without absorbing. 'I hear you, and I'm glad you felt you could share that. Let's make sure we're supporting you here in the ways we can.' You are a leader, not a therapist — and conflating the two harms both roles." },
+  { title: "Favoritism Perception", body: "Familiarity creates perception risk. A team member you are personally close to must be held to the same standard as everyone else — and held more visibly, not less. The appearance of favoritism is as damaging as favoritism itself." },
+  { title: "The Test", body: "Before any decision involving someone you know personally: 'Would I make this same call if I had no relationship with this person?' If no, pause and examine your reasoning." },
+];
+const PLAN_TYPES = ["Training Plan","Marketing Plan","Growth Plan","Development Plan"];
+const PLANS = {
+  "Training Plan": {
+    30: { focus: "Foundation & Orientation", items: ["Complete all compliance and regulatory training requirements","Shadow experienced staff across all key functions","Review standard operating procedures for your role","Identify two or three primary mentors or go-to resources","Document your initial observations and open questions"] },
+    60: { focus: "Application & Integration", items: ["Begin independently managing your assigned responsibilities","Receive structured feedback from supervisor at Day 45","Identify one area where current processes could improve","Participate actively in team meetings — contribute perspective","Demonstrate competency in core skills assessment"] },
+    90: { focus: "Ownership & Contribution", items: ["Operate with full independence in your role","Complete 90-day performance review with your director","Propose one improvement to a workflow or process","Begin developing your own training resource or job aid","Articulate your six-month goals with your supervisor"] },
+  },
+  "Marketing Plan": {
+    30: { focus: "Research & Relationship Mapping", items: ["Identify top 10 target referral sources in your territory","Complete a competitive landscape review","Attend three in-person visits to key referral relationships","Review all current account history and contact records","Establish a tracking method for outreach activity"] },
+    60: { focus: "Active Outreach & Pipeline Building", items: ["Conduct a minimum of 15 quality referral source visits","Facilitate two educational in-services or lunch programs","Identify stalled referral relationships and develop reactivation strategy","Review referral conversion data and identify patterns","Establish a regular cadence with your top accounts"] },
+    90: { focus: "Results Review & Strategy Refinement", items: ["Analyze referral volume trends against 30 and 60 day baselines","Present territory report to director with actionable next steps","Identify new growth opportunities not previously pursued","Refine messaging based on feedback gathered in first 60 days","Set Q2 goals with specific, measurable outcomes"] },
+  },
+  "Growth Plan": {
+    30: { focus: "Establish Baseline", items: ["Identify two to three specific growth goals with your director","Assess current performance data and identify gaps","Review all available resources and tools at your disposal","Build awareness of the metrics that define success in your role","Begin tracking one leading indicator of your own performance"] },
+    60: { focus: "Build Momentum", items: ["Execute intentional actions toward each of your growth goals","Request a mid-point check-in with your supervisor","Identify one skill gap and take a concrete action to address it","Reflect on what's working and what needs adjustment","Document your growth and share it — don't let it be invisible"] },
+    90: { focus: "Measure & Expand", items: ["Evaluate progress against each of the goals set at Day 1","Identify which growth actions produced the greatest return","Celebrate and document genuine progress — growth is not linear","Set next-horizon goals based on what you've learned","Discuss long-term trajectory with your director"] },
+  },
+  "Development Plan": {
+    30: { focus: "Self-Discovery & Intentionality", items: ["Complete a self-assessment across the core competencies for your role","Identify your two greatest professional strengths","Name one to two development priorities you want to grow into","Read or review one resource aligned to your development area","Have a candid conversation with your director about your goals"] },
+    60: { focus: "Skill Building in Action", items: ["Take on one stretch assignment outside your current comfort zone","Seek feedback from a peer or leader you respect","Practice the development skill in real situations — then reflect","Identify a role model who demonstrates what you're working toward","Share a development update with your director at mid-point"] },
+    90: { focus: "Integration & Next Horizon", items: ["Reflect on who you were at Day 1 and who you are at Day 90","Articulate how your development has changed your daily approach","Receive a formal development review from your director","Co-design your next development chapter together","Commit to at least one development action that continues beyond 90 days"] },
+  },
+};
+const SELF_ASSESSMENTS = [
+  "I hold myself to the same standard I apply to others.",
+  "I respond to stress in ways that model what I want to see in my team.",
+  "I actively seek feedback, and I receive it without defensiveness.",
+  "I am clear on my personal values and they are visible in my decisions.",
+  "I distinguish between reacting and responding — and I choose the latter.",
+  "I invest intentionally in my own learning and professional development.",
+  "I recognize when I am operating from ego versus operating from principle.",
+  "I repair ruptures — with my team, my peers, and myself.",
+  "I know what drains me and what energizes me, and I manage both.",
+  "I communicate with honesty, even when the honest answer is harder.",
+];
+const READING_LIST = [
+  { title: "Dare to Lead", author: "Brené Brown", desc: "Explores the relationship between vulnerability, courage, and effective leadership. Essential reading for leaders who want to move from armor to authentic influence." },
+  { title: "The Five Dysfunctions of a Team", author: "Patrick Lencioni", desc: "A foundational model for understanding what breaks team trust — and a practical framework for rebuilding it. Relevant at every leadership level." },
+  { title: "Crucial Conversations", author: "Patterson, Grenny, McMillan & Switzler", desc: "The single best resource for leaders who want to handle high-stakes dialogue with skill, not avoidance. Pairs directly with the counseling tools in this guide." },
+  { title: "Leaders Eat Last", author: "Simon Sinek", desc: "Reframes leadership as a responsibility to create psychological safety. Particularly valuable for leaders managing multi-generational or high-turnover environments." },
+  { title: "The Coaching Habit", author: "Michael Bungay Stanier", desc: "A practical approach to becoming a coaching leader rather than a problem-solving leader. Offers seven core questions that change the nature of every conversation." },
+  { title: "Mindset: The New Psychology of Success", author: "Carol S. Dweck", desc: "Foundational thinking on fixed vs. growth mindset — applicable both to how you lead and how you model learning for your team." },
+  { title: "Extreme Ownership", author: "Jocko Willink & Leif Babin", desc: "A demanding framework of radical accountability. Best applied with nuance — the principles are powerful, the context requires adaptation to civilian leadership." },
+  { title: "The First 90 Days", author: "Michael Watkins", desc: "The definitive guide to leadership transitions — whether you're new to a role or helping someone else navigate one. Directly applicable to 30/60/90 planning." },
+];
+const REFLECTION_PROMPTS = [
+  "What decision did I make this week that I'm most confident about — and why?",
+  "Where did I react when I should have responded?",
+  "Whose growth did I actively invest in this week?",
+  "What did I avoid that I know I need to address?",
+  "When did I lead from my values — and when did I compromise them?",
+  "What is the feedback I most need to hear, and who could give it to me?",
+  "Where is there a gap between what I say I believe and how I'm actually behaving?",
+  "What would my best version of leadership look like this week?",
+];
+
+function NotesPanel({ isOpen, onClose, context, notes, onAddNote }) {
+  const [draft, setDraft] = useState("");
+  if (!isOpen) return null;
+  const save = () => {
+    if (!draft.trim()) return;
+    onAddNote({ text: draft.trim(), context, time: new Date().toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) });
+    setDraft("");
+  };
+  return (
+    <div className="notes-overlay" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="notes-panel">
+        <div className="notes-header">
+          <span className="notes-header-text">Field Notes</span>
+          <button className="notes-close" onClick={onClose}>×</button>
+        </div>
+        <div className="notes-context">{context || "General Notes"}</div>
+        <textarea className="notes-input" placeholder="Record your thoughts, commitments, reflections..." value={draft} onChange={(e) => setDraft(e.target.value)} />
+        {notes.length > 0 && (
+          <div className="notes-entries">
+            {[...notes].reverse().map((n, i) => (
+              <div key={i} className="notes-entry">
+                <div className="notes-entry-meta">{n.time} · {n.context}</div>
+                <div className="notes-entry-text">{n.text}</div>
+              </div>
+            ))}
+          </div>
+        )}
+        <div className="notes-footer">
+          <button className="btn-primary" onClick={save}>Save Note</button>
+          <button className="btn-secondary" onClick={onClose}>Close</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CheckItem({ text, checked, onToggle }) {
+  return (
+    <div className="checklist-item">
+      <div className={`check-box ${checked ? "checked" : ""}`} onClick={onToggle}>
+        {checked && <span className="check-mark">✓</span>}
+      </div>
+      <span className={`check-text ${checked ? "done" : ""}`}>{text}</span>
+    </div>
+  );
+}
+
+function RatingRow({ label, value, onChange }) {
+  return (
+    <div className="rating-row">
+      <span className="rating-label">{label}</span>
+      <div className="rating-dots">
+        {[1,2,3,4,5].map(n => (
+          <div key={n} className={`rating-dot ${value >= n ? "filled" : ""}`} onClick={() => onChange(n)}>{n}</div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CounselingSection({ onNote }) {
+  const [sub, setSub] = useState("power");
+  const subs = [
+    { id: "power", label: "Power Words" },
+    { id: "velvet", label: "Velvet Dagger" },
+    { id: "phrases", label: "Key Phrases" },
+    { id: "buildup", label: "Build Someone Up" },
+    { id: "uncomfortable", label: "Difficult Conversations" },
+    { id: "correct", label: "Professional Correction" },
+    { id: "boundary", label: "Professional Boundaries" },
+  ];
+  return (
+    <div>
+      <div className="section-header">
+        <div className="section-eyebrow">Section I</div>
+        <h1 className="section-title">Counseling Tools</h1>
+        <p className="section-desc">Language shapes outcomes. The frameworks, phrases, and approaches in this section are designed to help leaders communicate with precision, empathy, and authority — simultaneously.</p>
+        <hr className="section-rule" />
+      </div>
+      <div className="sub-nav">
+        {subs.map(s => <button key={s.id} className={`sub-tab ${sub === s.id ? "active" : ""}`} onClick={() => setSub(s.id)}>{s.label}</button>)}
+      </div>
+      {sub === "power" && (
+        <div>
+          <div className="grid-2">
+            <div className="card">
+              <div className="card-subtitle">Language That Leads</div>
+              <div className="card-title">Power Words</div>
+              <div className="card-body">Integrate these with intention — they signal strength, accountability, and direction without aggression.</div>
+              <div className="word-list">{POWER_WORDS.map(w => <span key={w} className="word-chip chip-power">{w}</span>)}</div>
+              <button className="inline-note-btn" onClick={() => onNote("Power Words")}>Add Reflection</button>
+            </div>
+            <div className="card">
+              <div className="card-subtitle">Words That Undermine</div>
+              <div className="card-title">Words to Avoid</div>
+              <div className="card-body">These words signal reactivity, imprecision, or defensiveness. Remove them from your leadership vocabulary.</div>
+              <div className="word-list">{AVOID_WORDS.map(w => <span key={w} className="word-chip chip-avoid">{w}</span>)}</div>
+              <button className="inline-note-btn" onClick={() => onNote("Words to Avoid")}>Add Reflection</button>
+            </div>
+          </div>
+          <div className="card" style={{ marginTop: 16 }}>
+            <div className="card-subtitle">In Practice</div>
+            <div className="card-title">Language Comparison</div>
+            <div className="compare-grid">
+              <div className="compare-box avoid">
+                <div className="compare-label">Undermines</div>
+                {["You always do this.","That's just not possible.","Honestly, I'm frustrated.","You should have known better.","I can't help you right now."].map((t,i) => <div key={i} className="compare-item">"{t}"</div>)}
+              </div>
+              <div className="compare-box prefer">
+                <div className="compare-label">Leads</div>
+                {["I've noticed a pattern I want to address.","Let's look at what we can do.","I want to be direct with you.","Here's what I'd like us to do differently.","Let's find a time to work through this together."].map((t,i) => <div key={i} className="compare-item">"{t}"</div>)}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {sub === "velvet" && (
+        <div className="card">
+          <div className="card-subtitle">Advanced Communication</div>
+          <div className="card-title">The Velvet Dagger</div>
+          <div className="card-body" style={{ marginBottom: 16 }}>These phrases deliver a direct, sometimes difficult truth in a way that disarms defensiveness and preserves the relationship.</div>
+          {VELVET_DAGGERS.map((v, i) => (
+            <div key={i} className="scenario" style={{ marginBottom: 12 }}>
+              <div className="scenario-label">Phrase {i+1}</div>
+              <div className="scenario-text">"{v.phrase}"</div>
+              <div className="scenario-note">{v.meaning}</div>
+            </div>
+          ))}
+          <button className="inline-note-btn" onClick={() => onNote("Velvet Dagger")}>Add Reflection</button>
+        </div>
+      )}
+      {sub === "phrases" && (
+        <div className="card">
+          <div className="card-subtitle">High-Impact Language</div>
+          <div className="card-title">Phrases to Elevate</div>
+          <div className="card-body" style={{ marginBottom: 16 }}>Use these in one-on-ones, team meetings, performance conversations, and coaching sessions.</div>
+          {POWER_PHRASES.map((ph, i) => (
+            <div key={i} className="scenario">
+              <div className="scenario-label">Phrase {String(i+1).padStart(2,"0")}</div>
+              <div className="scenario-text">"{ph}"</div>
+            </div>
+          ))}
+          <button className="inline-note-btn" onClick={() => onNote("Key Phrases")}>Add Reflection</button>
+        </div>
+      )}
+      {sub === "buildup" && (
+        <div className="card">
+          <div className="card-subtitle">Affirming With Precision</div>
+          <div className="card-title">Build Someone Up</div>
+          <div className="card-body" style={{ marginBottom: 16 }}>Generic praise loses its value quickly. These affirmations are specific, earned, and tied to observable moments.</div>
+          {BUILD_UP.map((b, i) => (
+            <div key={i} style={{ marginBottom: 16 }}>
+              <span className="tag tag-gold">{b.trigger}</span>
+              <div className="scenario" style={{ marginTop: 8 }}>
+                <div className="scenario-label">What to Say</div>
+                <div className="scenario-text">"{b.phrase}"</div>
+              </div>
+            </div>
+          ))}
+          <button className="inline-note-btn" onClick={() => onNote("Building Up Others")}>Add Reflection</button>
+        </div>
+      )}
+      {sub === "uncomfortable" && (
+        <div className="card">
+          <div className="card-subtitle">A Framework</div>
+          <div className="card-title">How to Have Difficult Conversations</div>
+          <div className="card-body" style={{ marginBottom: 20 }}>Avoidance is not leadership. The ability to have hard conversations — with clarity, care, and courage — is one of the most defining marks of an effective leader.</div>
+          {UNCOMFORTABLE_STEPS.map((s, i) => (
+            <div key={i} className="info-row">
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: "#B8963E", minWidth: 28, paddingTop: 2 }}>{s.step}</div>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: "#F5F2EC", marginBottom: 4 }}>{s.title}</div>
+                <div className="info-text">{s.body}</div>
+              </div>
+            </div>
+          ))}
+          <button className="inline-note-btn" onClick={() => onNote("Difficult Conversations")}>Add Reflection</button>
+        </div>
+      )}
+      {sub === "correct" && (
+        <div className="card">
+          <div className="card-subtitle">Accountability Without Humiliation</div>
+          <div className="card-title">Professional Correction</div>
+          <div className="card-body" style={{ marginBottom: 20 }}>Correcting someone professionally means holding a standard clearly while preserving the person's dignity and their ability to improve.</div>
+          {CORRECT_PROFESSIONALLY.map((c, i) => (
+            <div key={i} style={{ marginBottom: 16 }}>
+              <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 8 }}>
+                <span className="tag tag-slate">{c.label}</span>
+                <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 15, color: "#F5F2EC" }}>{c.title}</span>
+              </div>
+              <div className="card-body">{c.body}</div>
+              <hr className="divider" style={{ margin: "12px 0" }} />
+            </div>
+          ))}
+          <button className="inline-note-btn" onClick={() => onNote("Professional Correction")}>Add Reflection</button>
+        </div>
+      )}
+      {sub === "boundary" && (
+        <div className="card">
+          <div className="card-subtitle">Maintaining the Leader-Staff Line</div>
+          <div className="card-title">Separating Personal and Professional</div>
+          <div className="card-body" style={{ marginBottom: 20 }}>The healthiest leaders are human and warm — and they maintain clear professional architecture. These two things are not in conflict.</div>
+          {PROFESSIONAL_PERSONAL.map((p, i) => (
+            <div key={i} className="scenario" style={{ marginBottom: 12 }}>
+              <div className="scenario-label">{p.title}</div>
+              <div className="scenario-text" style={{ fontStyle: "normal", color: "#A8A4A0" }}>{p.body}</div>
+            </div>
+          ))}
+          <button className="inline-note-btn" onClick={() => onNote("Professional Boundaries")}>Add Reflection</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PlansSection({ onNote }) {
+  const [planType, setPlanType] = useState("Training Plan");
+  const [phase, setPhase] = useState(30);
+  const [checks, setChecks] = useState({});
+  const [customItems, setCustomItems] = useState({});
+  const [newItem, setNewItem] = useState("");
+  const planKey = `${planType}-${phase}`;
+  const plan = PLANS[planType]?.[phase];
+  const toggleCheck = (key) => setChecks(c => ({ ...c, [key]: !c[key] }));
+  const addCustom = () => {
+    if (!newItem.trim()) return;
+    setCustomItems(ci => ({ ...ci, [planKey]: [...(ci[planKey] || []), newItem.trim()] }));
+    setNewItem("");
+  };
+  const allItems = [...(plan?.items || []), ...(customItems[planKey] || [])];
+  const doneCount = allItems.filter((_, i) => checks[`${planKey}-${i}`]).length;
+  const pct = allItems.length ? Math.round((doneCount / allItems.length) * 100) : 0;
+  return (
+    <div>
+      <div className="section-header">
+        <div className="section-eyebrow">Section II</div>
+        <h1 className="section-title">30 · 60 · 90 Day Plans</h1>
+        <p className="section-desc">Structured plans create clarity and accountability across the arc of a transition, a growth cycle, or a strategic initiative.</p>
+        <hr className="section-rule" />
+      </div>
+      <div style={{ marginBottom: 8, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "#B8963E" }}>Plan Type</div>
+      <div className="plan-type-grid">
+        {PLAN_TYPES.map(t => <button key={t} className={`plan-type-btn ${planType === t ? "active" : ""}`} onClick={() => setPlanType(t)}>{t}</button>)}
+      </div>
+      <div style={{ marginBottom: 8, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "#B8963E" }}>Phase</div>
+      <div className="plan-timeline">
+        {[30, 60, 90].map(p => (
+          <div key={p} className={`plan-phase ${phase === p ? "active" : ""}`} onClick={() => setPhase(p)}>
+            <div className="plan-phase-label">Day {p}</div>
+            <div className="plan-phase-title">{PLANS[planType]?.[p]?.focus}</div>
+          </div>
+        ))}
+      </div>
+      {plan && (
+        <div className="card">
+          <div style={{ marginBottom: 16 }}>
+            <div className="progress-label">Completion — {pct}%</div>
+            <div className="progress-bar-wrap" style={{ marginTop: 6 }}>
+              <div className="progress-bar-fill" style={{ width: `${pct}%` }} />
+            </div>
+          </div>
+          <div className="card-subtitle">Day {phase} · {planType}</div>
+          <div className="card-title">{plan.focus}</div>
+          <div style={{ marginTop: 16 }}>
+            {plan.items.map((item, i) => <CheckItem key={i} text={item} checked={!!checks[`${planKey}-${i}`]} onToggle={() => toggleCheck(`${planKey}-${i}`)} />)}
+            {(customItems[planKey] || []).map((item, i) => <CheckItem key={`c${i}`} text={item} checked={!!checks[`${planKey}-${plan.items.length + i}`]} onToggle={() => toggleCheck(`${planKey}-${plan.items.length + i}`)} />)}
+          </div>
+          <div style={{ marginTop: 20, display: "flex", gap: 10 }}>
+            <input style={{ flex: 1, background: "#353854", border: "1px solid rgba(245,242,236,0.08)", color: "#F5F2EC", fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, padding: "8px 12px", outline: "none" }} placeholder="Add a custom action item..." value={newItem} onChange={e => setNewItem(e.target.value)} onKeyDown={e => e.key === "Enter" && addCustom()} />
+            <button className="btn-primary" style={{ flex: "0 0 auto", padding: "8px 16px" }} onClick={addCustom}>Add</button>
+          </div>
+        </div>
+      )}
+      <div className="card">
+        <div className="card-subtitle">Reflection Space</div>
+        <div className="card-title">Notes for This Phase</div>
+        <div className="card-body">What is working? What obstacles have emerged? What adjustments do you need to make?</div>
+        <textarea className="reflect-area" placeholder={`Your reflections for the Day ${phase} ${planType}...`} />
+        <button className="inline-note-btn" onClick={() => onNote(`30-60-90: ${planType} Day ${phase}`)}>Save to Field Notes</button>
+      </div>
+    </div>
+  );
+}
+
+function SelfGrowthSection({ onNote }) {
+  const [sub, setSub] = useState("assessment");
+  const [ratings, setRatings] = useState({});
+  const [reflections, setReflections] = useState({});
+  const [capWindow, setCapWindow] = useState(30);
+  const [reviewPhase, setReviewPhase] = useState(30);
+  const avgRating = () => { const vals = Object.values(ratings); if (!vals.length) return 0; return (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1); };
+  const subs = [
+    { id: "assessment", label: "Self Assessment" },
+    { id: "reflection", label: "Reflection Prompts" },
+    { id: "reading", label: "Reading Materials" },
+    { id: "cap", label: "Corrective Action Plan" },
+    { id: "review", label: "30 / 60 / 90 Review" },
+  ];
+  return (
+    <div>
+      <div className="section-header">
+        <div className="section-eyebrow">Section III</div>
+        <h1 className="section-title">Self Growth</h1>
+        <p className="section-desc">Great leaders are perpetual learners. This section is built for honest self-examination — the kind that precedes meaningful, lasting change.</p>
+        <hr className="section-rule" />
+      </div>
+      <div className="sub-nav">
+        {subs.map(s => <button key={s.id} className={`sub-tab ${sub === s.id ? "active" : ""}`} onClick={() => setSub(s.id)}>{s.label}</button>)}
+      </div>
+      {sub === "assessment" && (
+        <div className="card">
+          <div className="card-subtitle">Rate Yourself</div>
+          <div className="card-title">Leadership Self Assessment</div>
+          <div className="card-body" style={{ marginBottom: 20 }}>Rate yourself honestly — 1 (significant growth area) to 5 (consistent strength). The point is not a score. The point is honest visibility.</div>
+          {SELF_ASSESSMENTS.map((item, i) => <RatingRow key={i} label={item} value={ratings[i] || 0} onChange={v => setRatings(r => ({ ...r, [i]: v }))} />)}
+          {Object.keys(ratings).length > 0 && (
+            <div style={{ marginTop: 20, padding: "14px 16px", background: "#353854", borderLeft: "3px solid #B8963E" }}>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "#B8963E", marginBottom: 6 }}>Average Score</div>
+              <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 28, color: "#F5F2EC" }}>{avgRating()} <span style={{ fontSize: 14, color: "#A8A4A0" }}>/ 5.0</span></div>
+              <div style={{ fontSize: 12, color: "#A8A4A0", marginTop: 4 }}>
+                {avgRating() >= 4.5 ? "Exceptional. Focus now on teaching what you know." : avgRating() >= 3.5 ? "Solid foundation with clear opportunity to grow." : avgRating() >= 2.5 ? "Growth is the work — and you're doing it by being honest." : "Significant development areas identified. This is the beginning of something."}
+              </div>
+            </div>
+          )}
+          <textarea className="reflect-area" placeholder="What do your scores reveal? What surprised you?" />
+          <button className="inline-note-btn" onClick={() => onNote("Self Assessment")}>Save to Field Notes</button>
+        </div>
+      )}
+      {sub === "reflection" && (
+        <div className="card">
+          <div className="card-subtitle">Self-Directed Inquiry</div>
+          <div className="card-title">Reflection Prompts</div>
+          <div className="card-body" style={{ marginBottom: 20 }}>Each prompt is designed to surface something specific. Take your time with one or two — depth matters more than coverage.</div>
+          {REFLECTION_PROMPTS.map((prompt, i) => (
+            <div key={i} style={{ marginBottom: 16 }}>
+              <div className="scenario">
+                <div className="scenario-label">Prompt {String(i+1).padStart(2,"0")}</div>
+                <div className="scenario-text" style={{ fontStyle: "normal", color: "#F5F2EC" }}>{prompt}</div>
+              </div>
+              <textarea className="reflect-area" style={{ minHeight: 72 }} placeholder="Your response..." value={reflections[i] || ""} onChange={e => setReflections(r => ({ ...r, [i]: e.target.value }))} />
+            </div>
+          ))}
+          <button className="inline-note-btn" onClick={() => onNote("Reflection Prompts")}>Save to Field Notes</button>
+        </div>
+      )}
+      {sub === "reading" && (
+        <div className="card">
+          <div className="card-subtitle">Curated Library</div>
+          <div className="card-title">Reading Materials for Leaders</div>
+          <div className="card-body" style={{ marginBottom: 24 }}>These titles have a track record in professional and leadership development contexts. The annotations help you select based on where you are right now.</div>
+          {READING_LIST.map((r, i) => (
+            <div key={i} className="reading-card">
+              <div className="reading-number">{String(i+1).padStart(2,"0")}</div>
+              <div className="reading-content">
+                <div className="reading-author">{r.author}</div>
+                <div className="reading-title">{r.title}</div>
+                <div className="reading-desc">{r.desc}</div>
+              </div>
+            </div>
+          ))}
+          <button className="inline-note-btn" onClick={() => onNote("Reading Materials")}>Add Notes on Current Reading</button>
+        </div>
+      )}
+      {sub === "cap" && (
+        <div className="card">
+          <div className="card-subtitle">Personal Growth Planning</div>
+          <div className="card-title">My Corrective Action Plan</div>
+          <div className="card-body" style={{ marginBottom: 20 }}>A corrective action plan for yourself is not punitive — it's a structured commitment to close the gap between where you are and where you want to be.</div>
+          <div style={{ marginBottom: 8, fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, letterSpacing: "0.15em", textTransform: "uppercase", color: "#B8963E" }}>Development Window</div>
+          <div className="plan-timeline" style={{ marginBottom: 24 }}>
+            {[30, 60, 90].map(p => (
+              <div key={p} className={`plan-phase ${capWindow === p ? "active" : ""}`} onClick={() => setCapWindow(p)}>
+                <div className="plan-phase-label">Day</div>
+                <div className="plan-phase-title">{p}</div>
+              </div>
+            ))}
+          </div>
+          {[
+            { label: "Growth Area Identified", ph: "What specific behavior, habit, or competency are you working on?" },
+            { label: `What Does Success Look Like at Day ${capWindow}?`, ph: "Describe specifically what will be different. Be concrete." },
+            { label: "Actions You Will Take", ph: "What will you do, read, practice, or change? List each action." },
+            { label: "Accountability Structure", ph: "Who will you share this with? How will you track it?" },
+            { label: "What Will Get in the Way?", ph: "Name the obstacles you're anticipating — then name how you'll respond." },
+          ].map((field, i) => (
+            <div key={i} style={{ marginBottom: 16 }}>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#B8963E", marginBottom: 6 }}>{field.label}</div>
+              <textarea className="reflect-area" placeholder={field.ph} />
+            </div>
+          ))}
+          <button className="inline-note-btn" onClick={() => onNote(`CAP: Day ${capWindow} Window`)}>Save Plan to Field Notes</button>
+        </div>
+      )}
+      {sub === "review" && (
+        <div className="card">
+          <div className="card-subtitle">Growth Review</div>
+          <div className="card-title">30 · 60 · 90 Day Review</div>
+          <div className="card-body" style={{ marginBottom: 20 }}>Review is not judgment — it's recalibration. Revisit what you committed to and assess with honesty what has moved, what hasn't, and what comes next.</div>
+          <div className="plan-timeline" style={{ marginBottom: 24 }}>
+            {[30, 60, 90].map(p => (
+              <div key={p} className={`plan-phase ${reviewPhase === p ? "active" : ""}`} onClick={() => setReviewPhase(p)}>
+                <div className="plan-phase-label">Day</div>
+                <div className="plan-phase-title">{p} Review</div>
+              </div>
+            ))}
+          </div>
+          {[
+            { label: "What Did You Commit to at Day 1?", ph: "Summarize the growth areas and actions you set out to work on." },
+            { label: "What Has Actually Changed?", ph: "Be specific. What behaviors, habits, or outcomes look different?" },
+            { label: `What Did Not Move by Day ${reviewPhase}?`, ph: "Where did the gap persist? What got in the way?" },
+            { label: "What Did You Learn About Yourself?", ph: "Growth is often in what we discover, not just what we accomplish." },
+            { label: "What Comes Next?", ph: "What are you recommitting to? What are you adding? What are you releasing?" },
+          ].map((field, i) => (
+            <div key={i} style={{ marginBottom: 16 }}>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#B8963E", marginBottom: 6 }}>{field.label}</div>
+              <textarea className="reflect-area" placeholder={field.ph} />
+            </div>
+          ))}
+          <button className="inline-note-btn" onClick={() => onNote(`Day ${reviewPhase} Self Review`)}>Save Review to Field Notes</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function App() {
+  const [activeSection, setActiveSection] = useState("counseling");
+  const [notesOpen, setNotesOpen] = useState(false);
+  const [noteContext, setNoteContext] = useState("General Notes");
+  const [allNotes, setAllNotes] = useState([]);
+  const openNote = (ctx) => { setNoteContext(ctx); setNotesOpen(true); };
+  const addNote = (note) => setAllNotes(n => [...n, note]);
+  const navItems = [
+    { id: "counseling", roman: "I", label: "Counseling Tools" },
+    { id: "plans", roman: "II", label: "30 · 60 · 90 Plans" },
+    { id: "growth", roman: "III", label: "Self Growth" },
+  ];
+  return (
+    <>
+      <style>{css}</style>
+      <div className="app-shell">
+        <header className="app-header">
+          <div className="header-brand">
+            <div className="header-eyebrow">H&amp;B Hometown LLC</div>
+            <div className="header-title">Leadership Training</div>
+          </div>
+          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <a href="index.html" className="header-back">← Back to Site</a>
+            <button className="notes-trigger" onClick={() => { setNoteContext("General Notes"); setNotesOpen(true); }}>
+              Field Notes
+              {allNotes.length > 0 && <span className="notes-badge">{allNotes.length}</span>}
+            </button>
+          </div>
+        </header>
+        <nav className="primary-nav">
+          {navItems.map(n => (
+            <button key={n.id} className={`nav-tab ${activeSection === n.id ? "active" : ""}`} onClick={() => setActiveSection(n.id)}>
+              <span className="tab-roman">{n.roman}</span>{n.label}
+            </button>
+          ))}
+        </nav>
+        <main className="main-content">
+          {activeSection === "counseling" && <CounselingSection onNote={openNote} />}
+          {activeSection === "plans" && <PlansSection onNote={openNote} />}
+          {activeSection === "growth" && <SelfGrowthSection onNote={openNote} />}
+        </main>
+      </div>
+      <NotesPanel isOpen={notesOpen} onClose={() => setNotesOpen(false)} context={noteContext} notes={allNotes} onAddNote={addNote} />
+    </>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</script>
+</body>
+</html>
